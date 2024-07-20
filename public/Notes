@@ -1,0 +1,91 @@
+NEXT JS --> A framework for building FAST & SEARCH-ENGINE FRIENDLY applications. Its built on top of React.
+While React is just a library for building interactive UIs, Next JS is a comprehensive framework, a collection of libraries, tools, and conventions that streamline application development.
+
+For example, Next Js includes its own routing library, so we don't need to use a seperate library like react-router.
+
+In terms of tooling, it comes with a compiler for transforming and minifying our JavaScript code, a command line interface for building and starting our application, and a Node.js runtime.
+
+Node.js runtime --> There are 2 main ways we can execute our JavaScript code, within a web browser on teh client side or within a Node.js runtime on the server. So a Node.js runtime is just a fancy term for a program that executes JavaScript code.
+
+So Next JS comes with Node.js runtime and this allows us do really cool things. 
+- The first thing is that we can do full stack development so we can write both the frontend and the backend code in the same Next Js project. The backend code gets executed within the node.js runtime and the frontend code gets bundled and sent to teh client for execution within a web browser. In contrast, when building the application with react, we have to maintain a seperate backend project in a potentially different programming language.
+- This Node.js runtime also allows us to render our components on the server and send their content to the client, this technique is called SERVER-SIDE RENDERING or SSR. This make our applications faster and more search-engine friendly.
+
+With Next JS we can pre-render certain pages and components that have static data when we build our application, we just render them once and serve them whenever they are needed, this technique is called STATIC SITE GENERATION and can make our applications super fast.
+
+* For Next JS, we require Node version 16.8 or higher.
+
+Project Structure -->
+- app folder: It is also called as app router, this is the container for routing system. So in Next js our router is based on the file system, unlike react-router we don't have to configure our routes and map them to components, we can simply create files and folders to represent our routes.
+So here in app folder we have favicon file, global css file, a layout file which is a basic react component that returns an HTML and body element. This represents the common layout for our Pages. Inside the body element we have 'children' which is replaced by a page dynamically at runtime depending on where the user is in our application. In this folder we also have page.tsx, this represents our home page.
+- public folder: here we put our public assets like images.
+- In the root we have bunch of configuration files, one for ESLint, one for Tailwind CSS, and TypeScript. For the most part we don't have to touch the configuration files.
+
+Routing and Navigation -->
+- Routing in Next Js is based on the file system. Here the routing is based on convention not configuration.
+
+- Using anchor tag for navigation - If we run our application, in the network tab of the dev tools, we can see the requests sent to the server, in form of files like HTML, font document, CSS and few JS ones. So let's say we cleared the network tab and navigated to a page set with anchor tag, and now if we open the network tab again we'll see that all the resources are redownloaded, this is not the optimal way for navigation because in real application we probably have a navigation bar on the top, a sidenav on the left or right side, and as the user navigates from one page to thean another, we don't want to reload all the repetitive parts, we only want to replace the content area. 
+This is where we use the LINK component in Next JS.
+
+* To look for files by their names, use shortcut ctrl+P on windows and cmd+P on Mac.
+
+Client and Server side components -->
+In Next Js projects we have 2 environments where we can render our components and generate HTML markup, either on the client-side, within a web browser, or on the server-side, within the Node.js runtime.
+Rendering components on the client is similar to how React applications works, we refer this technique as CLIENT-SIDE RENDERING or CSR.
+On the flip side we have SERVER-SIDE RENDERING or SSR where the components are rendered on the server.
+
+CSR: 
+- Large Bundles: We have to bundle all our components and send them to the client for rendering. This means as our application grows so does our bundle size, because it must contain all of or componets. 
+- Resource Intensive: Now the larger the bundle, the more memory we need on the client to load all these components, so this approach is resource heavy.
+- No SEO: Other problem is that the search engine bot parts which are achines that browse and index our websites can't view our content because they can't execute JavaScript code so they can't render our components like a web browser.
+- Less secure: Any sensitive data that we have in our components or their dependencies like API keys will be exposed to the clients.
+
+SSR:
+- Smaller bundles: If we render our components on the server, we can get rid of all the problems mentioned in CSR, by only sending the essential components to the client and prevent our bundle from becoming uneccessarily large.
+- Resource efficient: The server handles most of the rendering, we need less resources on the client. 
+- SEC: And because the rendering is done on the server and we send the actual content to the client, search engine bots can view and index our pages.
+- More secure: We can keep sensitive data like API keys on the server.
+
+These are all the benifits of SSR, however with SSR we loose interactivity. So the server components which are components that are rendered on the server cannot,
+- Listen to browser events:  Events like click, change, submit and so on.
+- Access browser APIs: like the local storage. 
+- Maintain state
+- Use effects
+These functionalities are only available in client components, so in real world applications we often use a mixture of server and client components. We should default to server components, and use client components only when we absolutely need them.
+
+* All components in the app folder are server components by default. To make a server component work as client component, we have to use 'use client' above the import statements, this will tell the Next js compiler to include this file or this component in our JS bundle, that means if this componenet is dependent on some other component those components will automatically become client components and will be included in the JS bundle, so we don't have to repeat this directive on every client component.
+
+* We will use the client component when it is an absolute neccessity, and when using them inside server component, the server component will be rendered on the server and where we have the client component inside server component, there is going to be a hole or a slot where React will later inject our client component.
+
+Data Fetching --> There are 2 ways to fetch data, we can fetch it on client or on the server.
+- To fetch the data on the client, we use the state hook to declare a state variable and the effect hook to call the backend, get the data and put into our state variable. 
+There is another better way of fetching the data by using React query, but inspite of however we fetch data on the client in client components, there are problems such as large bundles, resource intensive, no SEO, less secure. 
+There is an additional problem as well here, i.e., an extra rountrip to the server (backend), so when a React application loads, first the browser downloads the HTML template as well as the CSS and JS files from the backend, and then it will send an extra request to fetch data from the backend. So there's always an extra roundtrip to the backend.
+- To fetch data on server, we can directly make call inside the component, no need for useState and useEffect hooks. It overcomes all the problems of data fetching on the client.
+
+* To get endpoints for dummy data, use 'jsonplaceholder.typicode.com'.
+
+Caching --> To store data somewhere that is faster to access.
+There are 3 places from where we get the data, 
+- the memory
+- the file system
+- the network
+As we get down the above list, getting data becomes slower. 
+Getting data from the network is always slower then getting the data from the file system, for this reason Next Js comes with a built-in data cache. 
+Whenever we use the fetch function to get some data, Next JS will automatically store the result in its data cache which is based on the file system, so next time we need the same piece of data, the next time we hit the same URL, Next Js is going to get the data from its data cache from the file system.
+Ofcourse we have the full control over this caching behavior, if you have data that changes frequently, we can disable caching or treat data in cache as fresh for a certain period of time.
+Example: Inside 2nd parameter to fetch, add {cache: 'no-store'} or { next: {revalidate: 10} } accordingly for disabling cache and for treating data fresh for a certain period of time.
+
+* Caching control is only possible in fetch, and not with axios.
+
+Rendering - Client-side and Server-side
+Server-side rendering --> Static and Dynamic Rendering --> 
+- Another performance optimization technique in Next JS is Static rendering/Static site generation (Render at build time).
+Static Rendering: When we have pages or components with static data, we can have Next JS render them once when we build our application for production. So the next time those pages or components are needed, Next JS is not going to re-render them, its going to get their payload or content from its cache, which is based on the file system. This is Static rendering, that means rendering at the build time.
+- Dynamic Rendering: Render at request time
+
+Styling Next JS Application,
+- Global Styles: This is done in global.css file. We should reserve this file for styles that are truely global, for styles that are specific to a page or a component use CSS modules or Tailwind CSS.
+- CSS Modules: A CSS file that is scoped to a page or a component. 
+- Tailwind CSS: A CSS framework that uses the concept of utility classes. With tailwind when we build our application, our final CSS bundle will only have the utility classes that we have used in our markup.
+- Daisy UI: A very popular component library for Tailwind CSS, its kind of bootstrap for Tailwind.
