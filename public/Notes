@@ -43,7 +43,7 @@ CSR:
 SSR:
 - Smaller bundles: If we render our components on the server, we can get rid of all the problems mentioned in CSR, by only sending the essential components to the client and prevent our bundle from becoming uneccessarily large.
 - Resource efficient: The server handles most of the rendering, we need less resources on the client. 
-- SEC: And because the rendering is done on the server and we send the actual content to the client, search engine bots can view and index our pages.
+- SEO: And because the rendering is done on the server and we send the actual content to the client, search engine bots can view and index our pages.
 - More secure: We can keep sensitive data like API keys on the server.
 
 These are all the benifits of SSR, however with SSR we loose interactivity. So the server components which are components that are rendered on the server cannot,
@@ -53,7 +53,7 @@ These are all the benifits of SSR, however with SSR we loose interactivity. So t
 - Use effects
 These functionalities are only available in client components, so in real world applications we often use a mixture of server and client components. We should default to server components, and use client components only when we absolutely need them.
 
-* All components in the app folder are server components by default. To make a server component work as client component, we have to use 'use client' above the import statements, this will tell the Next js compiler to include this file or this component in our JS bundle, that means if this componenet is dependent on some other component those components will automatically become client components and will be included in the JS bundle, so we don't have to repeat this directive on every client component.
+* All components in the app folder are server components by default. To make a server component work as client component, we have to use 'use client' directive above the import statements, this will tell the Next js compiler to include this file or this component in our JS bundle, that means if this componenet is dependent on some other component those components will automatically become client components and will be included in the JS bundle, so we don't have to repeat this directive on every client component.
 
 * We will use the client component when it is an absolute neccessity, and when using them inside server component, the server component will be rendered on the server and where we have the client component inside server component, there is going to be a hole or a slot where React will later inject our client component.
 
@@ -74,7 +74,7 @@ As we get down the above list, getting data becomes slower.
 Getting data from the network is always slower then getting the data from the file system, for this reason Next Js comes with a built-in data cache. 
 Whenever we use the fetch function to get some data, Next JS will automatically store the result in its data cache which is based on the file system, so next time we need the same piece of data, the next time we hit the same URL, Next Js is going to get the data from its data cache from the file system.
 Ofcourse we have the full control over this caching behavior, if you have data that changes frequently, we can disable caching or treat data in cache as fresh for a certain period of time.
-Example: Inside 2nd parameter to fetch, add {cache: 'no-store'} or { next: {revalidate: 10} } accordingly for disabling cache and for treating data fresh for a certain period of time.
+Example: Inside 2nd argument to fetch, add {cache: 'no-store'} or { next: {revalidate: 10} } accordingly for disabling cache and for treating data fresh for a certain period of time.
 
 * Caching control is only possible in fetch, and not with axios.
 
