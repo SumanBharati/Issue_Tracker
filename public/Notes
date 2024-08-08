@@ -89,3 +89,5 @@ Styling Next JS Application,
 - CSS Modules: A CSS file that is scoped to a page or a component. 
 - Tailwind CSS: A CSS framework that uses the concept of utility classes. With tailwind when we build our application, our final CSS bundle will only have the utility classes that we have used in our markup.
 - Daisy UI: A very popular component library for Tailwind CSS, its kind of bootstrap for Tailwind.
+
+Radix UI: Its a components library.
