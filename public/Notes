@@ -91,3 +91,5 @@ Styling Next JS Application,
 - Daisy UI: A very popular component library for Tailwind CSS, its kind of bootstrap for Tailwind.
 
 Radix UI: Its a components library.
+
+* npm i @hookform/resolvers@3.3.1 - This package allows react hookforms to integrate with various data validation libraries like zod.
